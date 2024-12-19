@@ -18,8 +18,8 @@ const activitySchema = z.object({
     description: z.string().min(1, "Activity description is required"),
     activityType: z.enum(["indoor", "outdoor", "virtual"]),
     locationType: z.enum(["provider", "user"]),
-    minMembers: z.number().min(1),
-    maxMembers: z.number().min(1),
+    minMembers: z.string().optional(),
+    maxMembers: z.string().optional(),
 })
 
 interface ActivityFormProps {
@@ -36,8 +36,8 @@ export function ActivityForm({ defaultValues, onSubmit }: ActivityFormProps) {
             description: "",
             activityType: "indoor",
             locationType: "provider",
-            minMembers: 1,
-            maxMembers: 1,
+            minMembers: "",
+            maxMembers: "",
             ...defaultValues,
         },
     })
@@ -69,7 +69,7 @@ export function ActivityForm({ defaultValues, onSubmit }: ActivityFormProps) {
                         name="category"
                         render={({ field }) => (
                             <FormItem className="space-y-3">
-                                <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-2 block">Select the best category to describe your activity <span className="text-red-500">*</span></FormLabel>
+                                <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-2 block leading-[20px] text-left">Select the best category to describe your activity <span className="text-red-500">*</span></FormLabel>
                                 <FormControl>
                                     <RadioGroup
                                         onValueChange={field.onChange}
@@ -87,7 +87,7 @@ export function ActivityForm({ defaultValues, onSubmit }: ActivityFormProps) {
                                         ].map((category) => (
                                             <div key={category} className="flex items-center space-x-2">
                                                 <RadioGroupItem value={category} id={category} className="w-[18px] h-[18px] border-[#202632] checked:bg-[#202632]" />
-                                                <Label htmlFor={category} className="text-[14px] text-[#2E2B2B]">{category}</Label>
+                                                <Label htmlFor={category} className="text-[14px] font-normal text-[#2E2B2B]">{category}</Label>
                                             </div>
                                         ))}
                                     </RadioGroup>
@@ -119,7 +119,7 @@ export function ActivityForm({ defaultValues, onSubmit }: ActivityFormProps) {
                         name="description"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-2 block">About the Activity <span className="text-red-500">*</span></FormLabel>
+                                <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-2 block leading-[20px] text-left">About the Activity <span className="text-red-500">*</span></FormLabel>
                                 <FormControl>
                                     <Textarea
                                         placeholder="Activity Description"
@@ -137,7 +137,7 @@ export function ActivityForm({ defaultValues, onSubmit }: ActivityFormProps) {
                         name="activityType"
                         render={({ field }) => (
                             <FormItem className="space-y-3">
-                                <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-2 block">Please select the activity type <span className="text-red-500">*</span></FormLabel>
+                                <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-2 block leading-[20px] text-left">Please select the activity type <span className="text-red-500">*</span></FormLabel>
                                 <FormControl>
                                     <RadioGroup
                                         onValueChange={field.onChange}
@@ -147,7 +147,7 @@ export function ActivityForm({ defaultValues, onSubmit }: ActivityFormProps) {
                                         {["indoor", "outdoor", "virtual"].map((type) => (
                                             <div key={type} className="flex items-center space-x-2">
                                                 <RadioGroupItem value={type} id={type} className="w-[18px] h-[18px] border-[#202632] checked:bg-[#202632]" />
-                                                <Label htmlFor={type} className="text-[14px] text-[#2E2B2B] capitalize">
+                                                <Label htmlFor={type} className="text-[14px] text-[#2E2B2B] font-normal capitalize">
                                                     {type}
                                                 </Label>
                                             </div>
@@ -164,7 +164,7 @@ export function ActivityForm({ defaultValues, onSubmit }: ActivityFormProps) {
                         name="locationType"
                         render={({ field }) => (
                             <FormItem className="space-y-3">
-                                <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-2 block">Please select the type of location <span className="text-red-500">*</span></FormLabel>
+                                <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-2 block leading-[20px] text-left">Please select the type of location <span className="text-red-500">*</span></FormLabel>
                                 <FormControl>
                                     <RadioGroup
                                         onValueChange={field.onChange}
@@ -173,11 +173,11 @@ export function ActivityForm({ defaultValues, onSubmit }: ActivityFormProps) {
                                     >
                                         <div className="flex items-center space-x-2">
                                             <RadioGroupItem value="provider" id="provider" className="w-[18px] h-[18px] border-[#202632] checked:bg-[#202632]" />
-                                            <Label htmlFor="provider" className="text-[14px] text-[#2E2B2B]">Provider Location</Label>
+                                            <Label htmlFor="provider" className="text-[14px] font-normal text-[#2E2B2B]">Provider Location</Label>
                                         </div>
                                         <div className="flex items-center space-x-2">
                                             <RadioGroupItem value="user" id="user" className="w-[18px] h-[18px] border-[#202632] checked:bg-[#202632]" />
-                                            <Label htmlFor="user" className="text-[14px] text-[#2E2B2B]">User Location</Label>
+                                            <Label htmlFor="user" className="text-[14px] font-normal text-[#2E2B2B]">User Location</Label>
                                         </div>
                                     </RadioGroup>
                                 </FormControl>
@@ -185,18 +185,19 @@ export function ActivityForm({ defaultValues, onSubmit }: ActivityFormProps) {
                             </FormItem>
                         )}
                     />
+                    <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-1 block">How many members can take part in the activity?</FormLabel>
+                    <div className="grid grid-cols-2 gap-[16px]">
 
-                    <div className="grid grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
                             name="minMembers"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-2 block">Minimum Members</FormLabel>
                                     <FormControl>
                                         <Input
-                                            type="number"
-                                            min={1}
+                                         
+                                            placeholder="Minimum Members"
+                                           
                                             {...field}
                                             onChange={(e) => field.onChange(parseInt(e.target.value))}
                                             className="w-full h-[38px] border border-[#E5E5E5] rounded-full"
@@ -212,11 +213,12 @@ export function ActivityForm({ defaultValues, onSubmit }: ActivityFormProps) {
                             name="maxMembers"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-[14px] font-medium text-[#2E2B2B] mb-2 block">Maximum Members</FormLabel>
+
                                     <FormControl>
                                         <Input
-                                            type="number"
-                                            min={1}
+                                          
+                                            placeholder="Maximum Members"
+                                         
                                             {...field}
                                             onChange={(e) => field.onChange(parseInt(e.target.value))}
                                             className="w-full h-[38px] border border-[#E5E5E5] rounded-full"

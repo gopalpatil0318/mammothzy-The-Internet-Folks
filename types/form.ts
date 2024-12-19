@@ -5,8 +5,8 @@ export type ActivityFormData = {
     description: string;
     activityType: 'indoor' | 'outdoor' | 'virtual';
     locationType: 'provider' | 'user';
-    minMembers: number;
-    maxMembers: number;
+    minMembers: string;
+    maxMembers: string;
     addressLine1: string;
     addressLine2?: string;
     zipCode: string;
